@@ -1,10 +1,10 @@
 import React from 'react';
 
-const ChatInput = ({ onInputChange, onSubmitMessage }) => {
+const ChatInput = ({ onInputChange, onSubmitMessage, onEnterKeyPress, input }) => {
     return (
         <div>
-            <input type="text" onChange={onInputChange}/>
-            <input type="submit" onClick={onSubmitMessage}/>
+            <input type="text" onChange={onInputChange} onKeyPress={onEnterKeyPress} value={input}/>
+            <input type="submit" onClick={onSubmitMessage} />
         </div>
     )
 }

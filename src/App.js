@@ -5,7 +5,6 @@ import MessageList from './components/message-list/message-list.component';
 import ChatInput from './components/chat-input/chat-input.component';
 
 
-
 class App extends React.Component {
   constructor() {
     super();
@@ -41,20 +40,29 @@ class App extends React.Component {
       time: '16:34',
       username: 'Tal'
     })
-    this.setState({messages: messages})
-
-    return messages
+    return this.setState({messages: messages, input: ''})
   }
 
+  onEnterKeyPress = (event) => {
+    if (event.which === 13) {
+      event.preventDefault();
+      this.onSubmitMessage();
+    }
+  }
 
   render() {
-    const { messages } = this.state;
+    const { messages, input } = this.state;
 
     return (
       <div className="App">
         <Navigation />
         <MessageList messages={messages}/>
-        <ChatInput onInputChange={this.onInputChange} onSubmitMessage={this.onSubmitMessage}/>
+        <ChatInput 
+          onInputChange={this.onInputChange} 
+          onSubmitMessage={this.onSubmitMessage} 
+          onEnterKeyPress={this.onEnterKeyPress}
+          input={input}
+        />
       </div>
     );
   };
