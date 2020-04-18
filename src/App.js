@@ -1,4 +1,5 @@
 import React from 'react';
+import uuidv1 from 'uuid/v1';
 import './App.css';
 import Navigation from './components/navigation/navigation.component';
 import MessageList from './components/message-list/message-list.component';
@@ -46,7 +47,7 @@ class App extends React.Component {
   onSubmitMessage = () => {
     const { messages } = this.state;
     messages.push({
-      id: '2',
+      id: uuidv1(),
       text: this.state.input,
       time: '16:34',
       username: 'Tal'
