@@ -4,7 +4,7 @@ import logo from './logo.png';
 const Logo = () => {
     return (
         <div>
-            <img src={logo} alt="app-logo" style={{width: '15vw'}}/>
+            <img src={logo} alt="app-logo" style={{width: '110px'}}/>
         </div>
         
     )

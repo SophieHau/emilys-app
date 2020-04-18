@@ -3,12 +3,14 @@ import './App.css';
 import Navigation from './components/navigation/navigation.component';
 import MessageList from './components/message-list/message-list.component';
 import ChatInput from './components/chat-input/chat-input.component';
+import SignIn from './components/signin/signin.component';
+import Register from './components/register/register.component';
 
 
 class App extends React.Component {
   constructor() {
     super();
-
+    
     this.state = {
       messages: [
         {
@@ -24,7 +26,16 @@ class App extends React.Component {
           username: 'Sophie'
           },
       ],
-      input: ''
+      input: '',
+      isSignedin: false,
+      user: {
+        id: '',
+        name: '',
+        email: '',
+        joined: '',
+        img: ''
+      },
+      route: 'signin'
     }
   }
 
@@ -50,22 +61,39 @@ class App extends React.Component {
     }
   }
 
-  render() {
-    const { messages, input } = this.state;
+  onRouteChange = (route) => {
+    if (route === 'signout') {
+      this.setState({isSignedIn: false})
+    } else if (route === 'home') {
+      this.setState({isSignedIn: true})
+    }
+    this.setState({route: route});
+  }
 
+  render() {
+    const { messages, input, isSignedIn, route} = this.state;
     return (
       <div className="App">
-        <Navigation />
-        <MessageList messages={messages}/>
-        <ChatInput 
-          onInputChange={this.onInputChange} 
-          onSubmitMessage={this.onSubmitMessage} 
-          onEnterKeyPress={this.onEnterKeyPress}
-          input={input}
-        />
+        <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange}/>
+        {route === 'home'
+          ? <div>
+              <MessageList messages={messages}/>
+              <ChatInput 
+                onInputChange={this.onInputChange} 
+                onSubmitMessage={this.onSubmitMessage} 
+                onEnterKeyPress={this.onEnterKeyPress}
+                input={input}
+              />
+            </div>
+          : (
+            route === 'register'
+            ? <Register onRouteChange={this.onRouteChange} />
+            : <SignIn onRouteChange={this.onRouteChange} />
+            )
+        }
       </div>
     );
   };
-}
+};
 
 export default App;
