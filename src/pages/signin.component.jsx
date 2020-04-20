@@ -1,7 +1,7 @@
 import React from 'react';
 import './signin.style.css';
 import { Link } from 'react-router-dom';
-import { signInWithGoogle } from '../firebase/firebase.utils';
+import { auth, signInWithGoogle } from '../firebase/firebase.utils';
 
 
 class SignIn extends React.Component {
@@ -15,13 +15,23 @@ class SignIn extends React.Component {
         }
     }
 
-    handleSubmit = (event) => {
+    handleSubmit = async (event) => {
         event.preventDefault();
+
+        const { email, password } = this.state;
+
+        try {
+            await auth.signInWithEmailAndPassword(email, password);
+            this.setState({ email: '', password: '' });
+        } catch(error) {
+            console.log(error);
+        }
+
         this.setState({email: '', password: ''})
     }
 
     handleChange = (event) => {
-        const {value, name} = event.target.value
+        const {value, name} = event.target
         this.setState({ [name]: value})
     }
 
@@ -33,12 +43,12 @@ class SignIn extends React.Component {
                             <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
                             <legend className="f4 fw6 ph0 mh0">Sign In</legend>
                             <div className="mt3">
-                                <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
+                                <label className="db fw6 lh-copy f6" htmlFor="email">Email</label>
                                 <input 
                                     className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
                                     type="email"
-                                    name="email-address"  
-                                    id="email-address"
+                                    name="email"  
+                                    id="email"
                                     defaultValue={this.state.email}
                                     onChange={this.handleChange}
                                     required
@@ -58,11 +68,13 @@ class SignIn extends React.Component {
                             </div>
                             </fieldset>
                             <div className="">
-                                <input 
+                                <button 
                                     className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib no-underline black" 
                                     type="submit"
-                                    value="Sign in"
-                                />
+                                    onClick={this.handleSubmit}
+                                >
+                                    Sign in
+                                </button>
                                 <button 
                                     className="b ph3 ml2 pv2 input-reset ba b--black bg-blue grow pointer f6 dib no-underline white" 
                                     onClick={signInWithGoogle}
