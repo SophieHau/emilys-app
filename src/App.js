@@ -5,23 +5,46 @@ import Navigation from './components/navigation/navigation.component';
 import Homepage from './pages/homepage.component';
 import SignIn from './pages/signin.component';
 import Register from './pages/register.component';
+import { auth } from './firebase/firebase.utils';
 
 
 
-const App = () => {
-  return (
-    <div className="App">
-      <Router>
-      <Navigation />
-        <Switch>
-          <Route exact path='/' component={Homepage}/>
-          <Route path='/signin' component={SignIn} />
-          <Route path='/register' component={Register} />
-        </Switch>
-      </Router>
-    </div>
-  );
-};
+class App extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      currentUser: null
+    }
+  }
+
+  unsubscribeFromAuth = null;
+
+  componentDidMount() {
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
+      this.setState({ currentUser: user });
+    })
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeFromAuth();
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <Router>
+        <Navigation currentUser={this.state.currentUser} />
+          <Switch>
+            <Route exact path='/' component={Homepage}/>
+            <Route path='/signin' component={SignIn} />
+            <Route path='/register' component={Register} />
+          </Switch>
+        </Router>
+      </div>
+    );
+  }
+} 
 
 
 export default App;

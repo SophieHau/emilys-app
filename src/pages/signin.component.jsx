@@ -1,6 +1,7 @@
 import React from 'react';
 import './signin.style.css';
 import { Link } from 'react-router-dom';
+import { signInWithGoogle } from '../firebase/firebase.utils';
 
 
 class SignIn extends React.Component {
@@ -55,7 +56,6 @@ class SignIn extends React.Component {
                                     required
                                 />
                             </div>
-                            <label className="pa0 ma0 lh-copy f6"><input type="checkbox" />Remember me</label>
                             </fieldset>
                             <div className="">
                                 <input 
@@ -63,14 +63,15 @@ class SignIn extends React.Component {
                                     type="submit"
                                     value="Sign in"
                                 />
-                                <input 
-                                    className="b ph3 ml2 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib no-underline black" 
-                                    type="submit"
-                                    value="Sign in with Google"
-                                />
+                                <button 
+                                    className="b ph3 ml2 pv2 input-reset ba b--black bg-blue grow pointer f6 dib no-underline white" 
+                                    onClick={signInWithGoogle}
+                                >
+                                    Sign in with Google
+                                </button>
                             </div>
                             <div className="lh-copy mt3">
-                                <Link to='/register' className="pointer f6 link dim black db">Don't have an account yet? Register</Link>
+                                <Link to='/register' className="pointer f6 link dim black db">Don't have an account yet? <span className="underline">Register</span></Link>
                                 <a href="#0" className="f6 link dim black db">Forgot your password?</a>
                             </div>
                         </form>
